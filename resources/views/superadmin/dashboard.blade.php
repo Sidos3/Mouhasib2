@@ -1,0 +1,11 @@
+
+
+
+    <div class="container">
+        <h1>SuperAdmin Dashboard</h1>
+        <p>Welcome to the Superadmin dashboard.</p>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf <!-- CSRF Protection -->
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
