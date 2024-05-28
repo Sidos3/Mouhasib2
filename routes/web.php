@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BilanController;
 use App\Http\Controllers\ComptableController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\HomeController;
@@ -76,3 +77,5 @@ Route::group(['middleware' => ['auth']], function () {
 Route::get('/our-service', [ServiceController::class, 'index'])->name('OurService');
 Route::get('/AdminService', [ServiceController::class, 'ServiceAdmin'])->name('ServiceAdmin');
 Route::get('/FournisseurService', [ServiceController::class, 'ServiceFournisseur'])->name('ServiceFournisseur');
+Route::post('/FournisseurService', [FournisseurController::class, 'create'])->name('create_fournisseure');
+Route::post('/AdminService', [BilanController::class, 'create_bilan'])->name('create_bilan');
