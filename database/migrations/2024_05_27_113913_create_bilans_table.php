@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bilans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('total_immobilisation');
             $table->text('details_immobilisation');
             $table->double('total_actif_a_court_terme');

@@ -63,10 +63,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    
+        // Check if the 'is_fournisseur' key exists and is true
+        if (isset($data['is_fournisseur']) && $data['is_fournisseur']) {
+            $user->update(['role' => 'fournisseur']);
+        }
+        // Check if the 'admin' key exists and is true
+        if (isset($data['is_admin']) && $data['is_admin']) {
+            $user->update(['role' => 'admin']);
+        }
+        return $user;
     }
+    
 }

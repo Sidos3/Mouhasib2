@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory; // Add this line
 
 class User extends Authenticatable
 {
-    use HasFactory; // Add this line
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name', 'email', 'password', 'role',
@@ -24,8 +22,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function company()
+    // Define the relationship with the Fournisseur model
+    public function fournisseurs()
     {
-        return $this->hasOne(Company::class);
+        return $this->hasMany(Fournisseur::class);
+    }
+    public function bilans()
+    {
+        return $this->hasMany(Bilan::class);
     }
 }
+

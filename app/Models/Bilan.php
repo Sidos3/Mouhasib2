@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bilan extends Model
 {
     protected $fillable = [
+        'user_id',
         'total_immobilisation',
         'details_immobilisation',
         'total_actif_a_court_terme',
@@ -18,4 +19,10 @@ class Bilan extends Model
         'details_du_passif_court_terme'
     ];
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+  
 }

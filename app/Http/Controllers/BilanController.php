@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bilan;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class BilanController extends Controller
 {
     public function create_bilan(Request $request)
     {
+
         $request->validate([
             'total_immobilisation' => 'required',
             'details_immobilisation' => 'required',
@@ -19,7 +21,10 @@ class BilanController extends Controller
             'total_du_passif_court_terme' => 'required',
             'details_du_passif_court_terme' => 'required'
         ]);
-        Bilan::create([
+        $user = Auth::user();
+       
+            $bilan = Bilan::create([
+            'user_id' => $user->id,
             'total_immobilisation' => $request->total_immobilisation,
             'details_immobilisation' => $request->details_immobilisation,
             'total_actif_a_court_terme' => $request->total_actif_a_court_terme,
@@ -29,6 +34,13 @@ class BilanController extends Controller
             'total_du_passif_court_terme' => $request->total_du_passif_court_terme,
             'details_du_passif_court_terme' => $request->details_du_passif_court_terme
         ]);
-        return response('create');
+          // Update the user's role to "admin"
+          $user = Auth::user();
+          // Assuming $user is the authenticated user
+          $user = User::find($user->id);
+          $user->update(['role' => 'admin']);
+          
+          return response('Bilan created successfully');
+       
     }
 }
