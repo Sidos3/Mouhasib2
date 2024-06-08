@@ -14,6 +14,15 @@ return new class extends Migration
         Schema::create('bilans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            // Admin Information
+            $table->string('admin_name');
+            $table->string('admin_email');
+            $table->string('admin_phone');
+            // Company Information
+            $table->string('company_name');
+            $table->string('company_address');
+            $table->string('company_registration');
+            // Balance Sheet Information
             $table->double('total_immobilisation');
             $table->text('details_immobilisation');
             $table->double('total_actif_a_court_terme');

@@ -9,6 +9,12 @@ class Bilan extends Model
 {
     protected $fillable = [
         'user_id',
+        'admin_name',
+        'admin_email',
+        'admin_phone',
+        'company_name',
+        'company_address',
+        'company_registration',
         'total_immobilisation',
         'details_immobilisation',
         'total_actif_a_court_terme',
@@ -24,5 +30,4 @@ class Bilan extends Model
     {
         return $this->belongsTo(User::class);
     }
-  
 }
