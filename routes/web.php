@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
-
+use App\Http\Controllers\JournalController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BilanController;
 use App\Http\Controllers\ComptableController;
@@ -79,3 +79,10 @@ Route::get('/AdminService', [ServiceController::class, 'ServiceAdmin'])->name('S
 Route::get('/FournisseurService', [ServiceController::class, 'ServiceFournisseur'])->name('ServiceFournisseur');
 Route::post('/FournisseurService', [FournisseurController::class, 'create'])->name('create_fournisseure');
 Route::post('/AdminService', [BilanController::class, 'create_bilan'])->name('create_bilan');
+
+
+// journal route 
+
+Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
+Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
+Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');

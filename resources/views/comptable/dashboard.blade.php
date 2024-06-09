@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <title>Comptable</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Montserrat Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -41,9 +42,11 @@
                     <li class="active"><a href="#dashboard" class="menu-link"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Dashboard</span></a></li>
                     <li><a href="#journal" class="menu-link"><i class="fa fa-book" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Journal</span></a></li>
                     <li><a href="#reports" class="menu-link"><i class="fa fa-file-text" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Reports</span></a></li>
+                    <li><a href="#factures" class="menu-link"><i class="fa fa-file" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Factures</span></a></li>
                     <li><a href="#stock-products" class="menu-link"><i class="fa fa-cubes" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Stock Products</span></a></li>
                     <li><a href="#compte-resultat" class="menu-link"><i class="fa fa-balance-scale" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Compte de Résultat</span></a></li>
                     <li><a href="#settings" class="menu-link"><i class="fa fa-cog" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Settings</span></a></li>
+                    
                 </ul>
             </div>
         </div>
@@ -65,7 +68,7 @@
                     <div class="col-md-5">
                         <div class="header-rightside">
                             <ul class="list-inline header-top pull-right">
-                                <li class="hidden-xs"><a href="#" class="add-project" data-toggle="modal" data-target="#crudModal" style="background-color: #FFC312;">Add Entry</a></li>
+                                <li class="hidden-xs"><a href="" class="add-project" data-toggle="modal" data-target="#crudModal" style="background-color: #FFC312;">Ajouter journal</a></li>
                                 <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
                                 <li>
                                     <a href="#" class="icon-info">
@@ -162,6 +165,7 @@
                     <div class="main-title">
                         <p class="font-weight-bold">JOURNAL ENTRIES</p>
                     </div>
+                    
                     <table id="crudTable">
                         <thead>
                             <tr>
@@ -175,8 +179,26 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            <!-- Rows will be added here dynamically -->
+                        <tbody id="" style="background-color: aliceblue">
+                            @foreach($journals as $journal)
+                            <tr>
+                                <td>{{ $journal->compte_debit }}</td>
+                                <td>{{ $journal->compte_credit }}</td>
+                                <td>{{ $journal->emplois }}</td>
+                                <td>{{ $journal->date }}</td>
+                                <td>{{ $journal->ressources }}</td>
+                                <td>{{ $journal->montant_debit }}</td>
+                                <td>{{ $journal->montant_credit }}</td>
+                                <td>
+                                    <a href="{{ route('journals.edit', $journal) }}" class="">Edit</a>
+                                    <form action="{{ route('journals.destroy', $journal) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                     <div class="totals">
@@ -184,27 +206,79 @@
                         <p>Total Crédit: <span id="totalCredit">0</span></p>
                     </div>
                 </div>
-
+ <style>
+    .btn {
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #FFC312;
+        }
+ </style>
                 <div id="reports" class="section">
                     <div class="main-title">
                         <p class="font-weight-bold">REPORTS</p>
+                        <div class="actions">
+                            <button class="btn btn-add-new"><i class="fas fa-plus"></i> Add New</button>
+                            <button class="btn btn-send"><i class="fas fa-paper-plane"></i> Send</button>
+                        </div>
+                        
                     </div>
-                    <table class="tablerepport">
+                    <table class="">
                         <thead>
                             <tr>
-                                <th>Produit</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>type</th>
                                 <th>Montant</th>
-                                <th>Charge</th>
-                                <th>Montant</th>
+                                <th>Variable/Fixe</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="report-entries">
-                            <!-- Rows will be added here dynamically -->
+                           
                         </tbody>
                     </table>
+                    <div class="totals">
+                        <p>Total Charge vaiable: <span id="totalDebit">0</span></p>
+                        <p>Total Charge Fixe: <span id="totalCredit">0</span></p>
+                    </div>
                 </div>
 
+                <div id="factures" class="section">
+                    <div class="main-title">
+                        <p class="font-weight-bold">factures</p>
+                    </div>
+                    <div class="actions">
+                        
+                        <button class="btn btn-update-tva"><i class="fas fa-sync"></i> Update TVA</button>
+                       
+                    </div>
+                    
+                    <table class="journaltable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>N° Facture</th>
+                                <th>Description</th>
+                                <th>Quantité</th>
+                                <th>Prix Unitaire (Dh)</th>
+                                <th>Montant HT (Dh)</th>
+                                <th>TVA (%)</th>
+                                <th>Montant TTC (Dh)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="stock-entries">
+                            <!-- Rows will be added here dynamically -->
+                        </tbody>
+                        </table>
+                            <div class="totals">
+                                <p>Total Charge vaiable avec TVA: <span id="totalDebit">0</span></p>
+                                <p>Total Charge Fixe avec TVA: <span id="totalCredit">0</span></p>
+                            </div>
+                </div>
                 <div id="stock-products" class="section">
                     <div class="main-title">
                         <p class="font-weight-bold">STOCK PRODUCTS</p>
@@ -330,56 +404,53 @@
                 
                 <!-- Include FontAwesome -->
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-                
+ <!-- Ajouter un journal -->
+ 
 <!-- Modal -->
-<div class="modal fade" id="crudModal" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel">
-    <div class="modal-dialog" role="document">
+<div id="crudModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="crudModalLabel">Add Entry</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="crudModalLabel">Add/Edit Journal Entry</h4>
             </div>
             <div class="modal-body">
-                <form id="crudForm">
+                <form id="journal-form" method="POST" action="{{ route('journals.store') }}">
+                    @csrf
                     <div class="form-group">
-                        <label for="debitAccount">N° Compte Débit</label>
-                        <input type="text" class="form-control" id="debitAccount" required>
+                        <label for="compte_debit">Compte Débit</label>
+                        <input type="text" name="compte_debit" class="form-control" id="compte_debit" required>
                     </div>
                     <div class="form-group">
-                        <label for="creditAccount">N° Compte Crédit</label>
-                        <input type="text" class="form-control" id="creditAccount" required>
+                        <label for="compte_credit">Compte Crédit</label>
+                        <input type="text" name="compte_credit" class="form-control" id="compte_credit" required>
                     </div>
                     <div class="form-group">
                         <label for="emplois">Emplois</label>
-                        <input type="text" class="form-control" id="emplois" required>
+                        <input type="text" name="emplois" class="form-control" id="emplois" required>
                     </div>
                     <div class="form-group">
                         <label for="date">Date</label>
-                        <input type="date" class="form-control" id="date" required>
+                        <input type="date" name="date" class="form-control" id="date" required>
                     </div>
                     <div class="form-group">
                         <label for="ressources">Ressources</label>
-                        <input type="text" class="form-control" id="ressources" required>
+                        <input type="text" name="ressources" class="form-control" id="ressources" required>
                     </div>
                     <div class="form-group">
-                        <label for="debitAmount">Montant Débit</label>
-                        <input type="number" class="form-control" id="debitAmount" required>
+                        <label for="montant_debit">Montant Débit</label>
+                        <input type="text" name="montant_debit" class="form-control" id="montant_debit" required>
                     </div>
                     <div class="form-group">
-                        <label for="creditAmount">Montant Crédit</label>
-                        <input type="number" class="form-control" id="creditAmount" required>
+                        <label for="montant_credit">Montant Crédit</label>
+                        <input type="text" name="montant_credit" class="form-control" id="montant_credit" required>
                     </div>
-                    <input type="hidden" id="entryId">
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveEntryButton">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
 <!-- Bootstrap JavaScript and dependencies -->
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
@@ -398,79 +469,11 @@
             $('#crudModalLabel').text(`Add ${capitalize(currentSection)} Entry`);
         });
 
-        $('#saveEntryButton').click(function () {
-            saveEntry();
+        $('#saveEntryButton').click(function (event) {
+            event.preventDefault();
+            
         });
     });
-
-    function saveEntry() {
-        const entry = {
-            debitAccount: $('#debitAccount').val(),
-            creditAccount: $('#creditAccount').val(),
-            emplois: $('#emplois').val(),
-            date: $('#date').val(),
-            ressources: $('#ressources').val(),
-            debitAmount: $('#debitAmount').val(),
-            creditAmount: $('#creditAmount').val(),
-            id: $('#entryId').val()
-        };
-        const sectionBody = `#${currentSection}-entries`;
-
-        if (entry.id) {
-            $(`#${currentSection}-entries tr[data-id="${entry.id}"]`).replaceWith(generateRow(entry));
-        } else {
-            entry.id = Date.now();
-            $(sectionBody).append(generateRow(entry));
-        }
-
-        $('#crudModal').modal('hide');
-        resetForm();
-    }
-
-    function editEntry(section, id) {
-        const row = $(`#${section}-entries tr[data-id="${id}"]`);
-        $('#debitAccount').val(row.find('td').eq(0).text());
-        $('#creditAccount').val(row.find('td').eq(1).text());
-        $('#emplois').val(row.find('td').eq(2).text());
-        $('#date').val(row.find('td').eq(3).text());
-        $('#ressources').val(row.find('td').eq(4).text());
-        $('#debitAmount').val(row.find('td').eq(5).text());
-        $('#creditAmount').val(row.find('td').eq(6).text());
-        $('#entryId').val(id);
-
-        $('#crudModal').modal('show');
-        $('#crudModalLabel').text(`Edit ${capitalize(section)} Entry`);
-    }
-
-    function deleteEntry(section, id) {
-        $(`#${section}-entries tr[data-id="${id}"]`).remove();
-    }
-
-    function generateRow(entry) {
-        return `<tr data-id="${entry.id}">
-            <td>${entry.debitAccount}</td>
-            <td>${entry.creditAccount}</td>
-            <td>${entry.emplois}</td>
-            <td>${entry.date}</td>
-            <td>${entry.ressources}</td>
-            <td>${entry.debitAmount}</td>
-            <td>${entry.creditAmount}</td>
-            <td>
-                <button class="btn btn-primary" onclick="editEntry('${currentSection}', ${entry.id})">Edit</button>
-                <button class="btn btn-danger" onclick="deleteEntry('${currentSection}', ${entry.id})">Delete</button>
-            </td>
-        </tr>`;
-    }
-
-    function resetForm() {
-        $('#crudForm')[0].reset();
-        $('#entryId').val('');
-    }
-
-    function saveSettings() {
-        const role = $('#role').val();
-        alert(`Settings saved! Role: ${role}`);
-    }
 
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -478,3 +481,5 @@
 </script>
 </body>
 </html>
+
+</script>

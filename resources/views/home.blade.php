@@ -142,13 +142,12 @@
                 <div class="col-md-4">
                     <legend><i class="fas fa-globe"></i> مكتبنا</legend>
                     <address>
-                        <strong>تويتر، شركة</strong><br>
-                        795 Folsom Ave، جناح 600<br>
-                        سان فرانسيسكو، CA 94107<br>
+                        <strong>Mouhasibe2024</strong><br>
+                        <br>
                         <abbr title="هاتف">P:</abbr> (123) 456-7890
                     </address>
                     <address>
-                        <strong>الاسم الكامل</strong><br>
+                        <strong>Email</strong><br>
                         <a href="mailto:#">Mouhasibe2024@gmail.com</a>
                     </address>
                 </div>
@@ -192,6 +191,7 @@
                 const dialog = document.createElement('div');
                 dialog.className = 'confirmation-dialog';
                 dialog.innerHTML = `
+                <i class="fas fa-sign-out-alt fa-2x"></i>
                     <div>هل أنت متأكد أنك تريد تسجيل الخروج؟</div>
                     <button class="btn btn-confirm">نعم</button>
                     <button class="btn btn-cancel">إلغاء</button>
@@ -215,3 +215,13 @@
 </body>
 
 </html>
+<style>
+      .confirmation-dialog {
+        width: 300px;
+        height: 200px;
+        color: #000;
+        border: 1px solid  teal;
+        padding: 20px;
+        text-align: center;
+      }
+</style>
