@@ -32,7 +32,7 @@
     <div class="row display-table-row">
         <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
             <div class="logo">
-                <a href="#"><img src="../logo.jpeg" alt="accountant_logo" class="hidden-xs hidden-sm">
+                <a href="#"><img src="{{ asset('images/logo.jpeg') }}" alt="accountant_logo" class="hidden-xs hidden-sm">
                     <img src="http://jskrishna.com/work/merkury/images/circle-logo.png" alt="accountant_logo" class="visible-xs visible-sm circle-logo">
                 </a>
             </div>
@@ -73,17 +73,31 @@
                                         <span class="label label-primary">3</span>
                                     </a>
                                 </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://jskrishna.com/work/merkury/images/user-pic.jpg" alt="user">
-                                        <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <div class="navbar-content">
-                                                <span>Accountant Name</span>
-                                                <p class="text-muted small">email@example.com</p>
-                                                <div class="divider"></div>
+                               <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <img src="{{ asset('images/user.jpg') }}" alt="user">
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <div class="navbar-content">
+                @if(Auth::check())
+                    <span>{{ Auth::user()->name }}</span>
+                    <p class="text-muted small">{{ Auth::user()->email }}</p>
+                @else
+                    <span>Guest</span>
+                    <p class="text-muted small">guest@example.com</p>
+                @endif
+                <div class="divider"></div>
                                                
-                                                <a href="{{ route('logout') }}" class="logout btn-sm">Logout <i class="fas fa-sign-out-alt"></i></a>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                </form>
+                                                
+                                                <a href="#" class="logout btn-sm" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    Logout <i class="fas fa-sign-out-alt"></i>
+                                                </a>
+                                                
 
                                             </div>
                                             
