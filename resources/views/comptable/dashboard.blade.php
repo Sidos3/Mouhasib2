@@ -1,6 +1,4 @@
-
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -190,12 +188,17 @@
                                 <td>{{ $journal->montant_debit }}</td>
                                 <td>{{ $journal->montant_credit }}</td>
                                 <td>
-                                    <a href="{{ route('journals.edit', $journal) }}" class="">Edit</a>
+                                    <a href="{{ route('journals.edit', $journal) }}" class="btn">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                                     <form action="{{ route('journals.destroy', $journal) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="">Delete</button>
+                                        <button type="submit" class="btn" >
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </form>
+                                    
                                 </td>
                             </tr>
                         @endforeach
