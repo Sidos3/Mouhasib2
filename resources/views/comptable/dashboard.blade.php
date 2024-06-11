@@ -176,24 +176,24 @@
                         </thead>
                         <tbody style="background-color: aliceblue">
                             @foreach($journals as $journal)
-                                <tr>
-                                    <td>{{ $journal->compte_debit }}</td>
-                                    <td>{{ $journal->compte_credit }}</td>
-                                    <td>{{ $journal->emplois }}</td>
-                                    <td>{{ $journal->date }}</td>
-                                    <td>{{ $journal->ressources }}</td>
-                                    <td>{{ $journal->montant_debit }}</td>
-                                    <td>{{ $journal->montant_credit }}</td>
-                                    <td>
-                                        <a href="{{ route('journals.edit', $journal) }}" class="edit-btn"  data-journal-id="{{ $journal->id }}">Edit</a>
-                                        <form action="{{ route('journals.destroy', $journal) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <td>{{ $journal->compte_debit }}</td>
+                                <td>{{ $journal->compte_credit }}</td>
+                                <td>{{ $journal->emplois }}</td>
+                                <td>{{ $journal->date }}</td>
+                                <td>{{ $journal->ressources }}</td>
+                                <td>{{ $journal->montant_debit }}</td>
+                                <td>{{ $journal->montant_credit }}</td>
+                                <td>
+                                    <a href="{{ route('journals.edit', $journal) }}" class="">Edit</a>
+                                    <form action="{{ route('journals.destroy', $journal) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                     <div class="totals">
