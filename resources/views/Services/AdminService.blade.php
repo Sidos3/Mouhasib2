@@ -22,6 +22,7 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 5px;
+            height: 80%;
         }
 
         .stepper {
@@ -36,8 +37,8 @@
         }
 
         .step-icon {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             background: #f1f1f1;
             border-radius: 50%;
             display: flex;
@@ -74,12 +75,13 @@
         textarea,
         select {
             display: block;
-            width: 100%;
+            width: 95%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: right;
+           
         }
 
         button {
