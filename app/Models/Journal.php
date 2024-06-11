@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Journal extends Model
 {
     use HasFactory;
+    protected $fillable=['compte_debit',
+    'compte_credit',
+    'emplois',
+    'date',
+    'ressources',
+    'montant_debit',
+    'montant_credit'];
 }

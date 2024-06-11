@@ -83,6 +83,12 @@ Route::post('/AdminService', [BilanController::class, 'create_bilan'])->name('cr
 
 // journal route 
 
+// Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
+// Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
+// Route::put('/journals/{journal}/update', [JournalController::class, 'update'])->name('journals.update');
+// Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
 Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
 Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
+
+Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
 Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
