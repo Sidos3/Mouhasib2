@@ -30,6 +30,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 // Authentication Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
