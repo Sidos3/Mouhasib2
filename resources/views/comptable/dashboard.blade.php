@@ -412,19 +412,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="crudModalLabel">Add/Edit Journal Entry</h4>
+                <h4 class="modal-title" id="crudModalLabel"> Entrer Le Journal</h4>
             </div>
             <div class="modal-body">
                 <form id="journal-form" method="POST" action="{{ route('journals.store') }}">
                     @csrf
                     <input type="hidden" name="_method" id="form-method" value="POST">
                     <div class="form-group">
-                        <label for="compte_debit">Compte Débit</label>
-                        <input type="text" name="compte_debit" class="form-control" id="compte_debit" required>
+                        <label for="compte_debit">N° Compte Débit</label>
+                        <input type="number" name="compte_debit" class="form-control" id="compte_debit" required>
                     </div>
                     <div class="form-group">
-                        <label for="compte_credit">Compte Crédit</label>
-                        <input type="text" name="compte_credit" class="form-control" id="compte_credit" required>
+                        <label for="compte_credit">N° Compte Crédit</label>
+                        <input type="number" name="compte_credit" class="form-control" id="compte_credit" required>
                     </div>
                     <div class="form-group">
                         <label for="emplois">Emplois</label>
