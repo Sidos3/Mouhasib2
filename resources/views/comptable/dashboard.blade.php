@@ -412,7 +412,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="crudModalLabel">Add/Edit Journal Entry</h4>
+                <h4 class="modal-title" id="crudModalLabel"> Entrer Le Journal</h4>
             </div>
             <div class="modal-body">
                 <form id="journal-form" method="POST" action="{{ route('journals.store') }}">
