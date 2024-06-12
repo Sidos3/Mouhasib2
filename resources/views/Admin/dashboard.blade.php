@@ -227,7 +227,7 @@
                 <div id="produits" class="section">
                     <h2>Products</h2>
                     <!-- Products Section Content Here -->
-                    <table class="table table-striped">
+                    <table class="">
                         <thead>
                             <tr>
                                 <th>Product ID</th>
