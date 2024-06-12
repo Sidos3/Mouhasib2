@@ -68,7 +68,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-    
+
         // Check if the 'is_fournisseur' key exists and is true
         if (isset($data['is_fournisseur']) && $data['is_fournisseur']) {
             $user->update(['role' => 'fournisseur']);
@@ -79,5 +79,4 @@ class RegisterController extends Controller
         }
         return $user;
     }
-    
 }
