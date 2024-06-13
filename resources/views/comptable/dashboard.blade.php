@@ -113,7 +113,7 @@
             <main class="main-container">
                 <div id="dashboard" class="section">
                     <div class="main-title">
-                        <p class="font-weight-bold">DASHBOARD</p>
+                        <p class="font-weight-bold">COMPTABLE DASHBOARD</p>
                     </div>
                     <div class="main-cards">
                         <div class="card">
@@ -185,7 +185,7 @@
                                 <td>{{ $journal->montant_debit }}</td>
                                 <td>{{ $journal->montant_credit }}</td>
                                 <td>
-                                    <a href="{{ route('journals.edit', $journal) }}" class="">Edit</a>
+                                    <a href="{{ route('journals.edit', $journal) }}" class="edit-btn1" data-journal-id="{{ $journal->id }}">Edit</a>
                                     <form action="{{ route('journals.destroy', $journal) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -286,11 +286,29 @@
                                                 <th>Name</th>
                                                 <th>Price</th>
                                                 <th>Stock</th>
+                                                <th>Description</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="stock-entries">
+                                        <tbody id="stock-entries" style="background-color: aliceblue">
                                             <!-- Rows will be added here dynamically -->
+                                            @foreach($products as $product)
+                                            <tr>
+                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $product->price }}</td>
+                                                <td>{{ $product->stock }}</td>
+                                                <td>{{ $product->description }}</td>
+                                                <td>
+                                                    <a href="{{ route('products.edit', $product) }}" class="edit-btn" data-product-id="{{ $product->id }}">Edit</a>
+                                                    <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -375,7 +393,7 @@
                                     </div>
                                     <div class="settings-content">
                                         <div class="setting-option">
-                                            <a href="#addProductPage">
+                                            <a href="#" data-toggle="modal" data-target="#addProductModal">
                                                 <i class="fas fa-plus-circle fa-5x setting-icon"></i>
                                                 <p>Add Product</p>
                                             </a>
@@ -394,7 +412,43 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+   <!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" method="POST" action="{{route('products.store')}}">
+                    @csrf
+                    <input type="hidden" name="_method" id="form-method" value="POST">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" name="name" class="form-control" id="productName" placeholder="Enter product name">
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price</label>
+                        <input type="number" name="price" class="form-control" id="productPrice" placeholder="Enter price">
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock</label>
+                        <input type="number" name="stock" class="form-control" id="productStock" placeholder="Enter stock quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea class="form-control" name="description" id="productDescription" placeholder="Enter product description"></textarea>
+                    </div>
+                    <button type="submit" class="btn">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
                                
                                 
                                 
@@ -417,7 +471,8 @@
             <div class="modal-body">
                 <form id="journal-form" method="POST" action="{{ route('journals.store') }}">
                     @csrf
-                    <input type="hidden" name="_method" id="form-method" value="POST">
+                    @method('PUT')
+                    {{-- <input type="hidden" name="_method" id="form-method" value="POST"> --}}
                     <div class="form-group">
                         <label for="compte_debit">N° Compte Débit</label>
                         <input type="number" name="compte_debit" class="form-control" id="compte_debit" required>
@@ -452,73 +507,100 @@
         </div>
     </div>
 </div>
+
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <!-- Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('.menu-link').click(function() {
-            $('.section').hide();
-            var target = $(this).attr('href');
-            $(target).show();
+$(document).ready(function() {
+    // Handle menu link clicks
+    $('.menu-link').click(function(event) {
+        event.preventDefault();
+        var section = $(this).attr('href');
+        $('.section').hide();
+        $(section).show();
+        $('.menu-link').parent().removeClass('active');
+        $(this).parent().addClass('active');
+        var currentSection = section.replace('#', '');
+        $('#crudModalLabel').text(`Add ${capitalize(currentSection)} Entry`);
+    });
+
+    // Calculate totals
+    var totalDebit = 0;
+    var totalCredit = 0;
+    $('tbody tr').each(function() {
+        var debit = parseFloat($(this).find('td:eq(5)').text()) || 0;
+        var credit = parseFloat($(this).find('td:eq(6)').text()) || 0;
+        totalDebit += debit;
+        totalCredit += credit;
+    });
+    $('#totalDebit').text(totalDebit.toFixed(2));
+    $('#totalCredit').text(totalCredit.toFixed(2));
+
+    // Handle edit button click
+    $('.edit-btn1').click(function(e) {
+        e.preventDefault();
+        var row = $(this).closest('tr');
+        var data = row.children('td').map(function() {
+            return $(this).text();
+        }).get();
+        var journalId = $(this).data('journal-id');
+        $('#journal-form').attr('action', '/journals/' + journalId);
+        $('#form-method').val('PUT');
+        $('#compte_debit').val(data[0]);
+        $('#compte_credit').val(data[1]);
+        $('#emplois').val(data[2]);
+        $('#date').val(data[3]);
+        $('#ressources').val(data[4]);
+        $('#montant_debit').val(data[5]);
+        $('#montant_credit').val(data[6]);
+        $('#crudModal').modal('show');
+    });
+
+    // Handle add button click
+    $('.add-project').click(function() {
+        $('#journal-form').attr('action', '{{ route('journals.store') }}');
+        $('#form-method').val('POST');
+        $('#journal-form')[0].reset();
+    });
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+});
+
+
+
+    $(document).ready(function(){
+        $(".menu-link").click(function(){
+            var sectionId = $(this).attr("href");
+            $(".section").hide();
+            $(sectionId).show();
         });
 
-        // Calculate totals
-        var totalDebit = 0;
-        var totalCredit = 0;
-        $('tbody tr').each(function() {
-            var debit = parseFloat($(this).find('td:eq(5)').text());
-            var credit = parseFloat($(this).find('td:eq(6)').text());
-            if (!isNaN(debit)) totalDebit += debit;
-            if (!isNaN(credit)) totalCredit += credit;
-        });
-        $('#totalDebit').text(totalDebit.toFixed(2));
-        $('#totalCredit').text(totalCredit.toFixed(2));
-
-        // Menu link click event
-        $('.menu-link').click(function(event) {
-            event.preventDefault();
-            var section = $(this).attr('href');
-            $('.section').hide();
-            $(section).show();
-            $('.menu-link').parent().removeClass('active');
-            $(this).parent().addClass('active');
-            var currentSection = section.replace('#', '');
-            $('#crudModalLabel').text('Add ' + capitalize(currentSection) + ' Entry');
-        });
-
-        // Handle edit button click
         $('.edit-btn').click(function(e) {
             e.preventDefault();
             var row = $(this).closest('tr');
             var data = row.children('td').map(function() {
                 return $(this).text();
             }).get();
-            var journalId = $(this).data('journal-id');
-            $('#journal-form').attr('action', '/journals/' + journalId);
+            var productId = $(this).data('product-id');
+            $('#addProductForm').attr('action', '/products/' + productId);
             $('#form-method').val('PUT');
-            $('#compte_debit').val(data[0]);
-            $('#compte_credit').val(data[1]);
-            $('#emplois').val(data[2]);
-            $('#date').val(data[3]);
-            $('#ressources').val(data[4]);
-            $('#montant_debit').val(data[5]);
-            $('#montant_credit').val(data[6]);
-            $('#crudModal').modal('show');
+            $('#productName').val(data[1]);
+            $('#productPrice').val(data[2]);
+            $('#productStock').val(data[3]);
+            $('#productDescription').val(data[4]);
+            $('#addProductModal').modal('show');
         });
 
-        // Handle add button click
         $('.add-project').click(function() {
-            $('#journal-form').attr('action', '{{ route('journals.store') }}');
+            $('#addProductForm').attr('action', '{{ route('products.store') }}');
             $('#form-method').val('POST');
-            $('#journal-form')[0].reset();
+            $('#addProductForm')[0].reset();
         });
     });
-
-    function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
 </script>
 
 </body>

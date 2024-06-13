@@ -11,6 +11,7 @@ use App\Http\Controllers\BilanController;
 use App\Http\Controllers\ComptableController;
 use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperAdminController;
 use Illuminate\Support\Facades\Route;
@@ -84,11 +85,18 @@ Route::post('/AdminService', [BilanController::class, 'create_bilan'])->name('cr
 
 // journal route 
 
-// Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
-// Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
-// Route::put('/journals/{journal}/update', [JournalController::class, 'update'])->name('journals.update');
-// Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
 Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
 Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
 Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
 Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
+
+// historique route
+Route::get('historique',function(){
+    return view('Historique.journal');
+});
+
+// produit route 
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
