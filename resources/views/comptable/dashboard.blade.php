@@ -448,18 +448,6 @@
         </div>
     </div>
 </div>
-
-                               
-                                
-                                
-                                <!-- Include FontAwesome -->
-                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-                 <!-- Ajouter un journal -->
-                 
-            </main>
-        </div>
-    </div>
-</div>
 <!-- Modal for CRUD operations -->
 <div id="crudModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="crudModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -471,8 +459,7 @@
             <div class="modal-body">
                 <form id="journal-form" method="POST" action="{{ route('journals.store') }}">
                     @csrf
-                    @method('PUT')
-                    {{-- <input type="hidden" name="_method" id="form-method" value="POST"> --}}
+                    <input type="hidden" name="_method" id="form-method" value="POST">
                     <div class="form-group">
                         <label for="compte_debit">N° Compte Débit</label>
                         <input type="number" name="compte_debit" class="form-control" id="compte_debit" required>
@@ -507,6 +494,19 @@
         </div>
     </div>
 </div>
+                               
+                                
+                                
+                                <!-- Include FontAwesome -->
+                                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+                 <!-- Ajouter un journal -->
+                 
+            </main>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -540,23 +540,28 @@ $(document).ready(function() {
 
     // Handle edit button click
     $('.edit-btn1').click(function(e) {
-        e.preventDefault();
-        var row = $(this).closest('tr');
-        var data = row.children('td').map(function() {
-            return $(this).text();
-        }).get();
-        var journalId = $(this).data('journal-id');
-        $('#journal-form').attr('action', '/journals/' + journalId);
-        $('#form-method').val('PUT');
-        $('#compte_debit').val(data[0]);
-        $('#compte_credit').val(data[1]);
-        $('#emplois').val(data[2]);
-        $('#date').val(data[3]);
-        $('#ressources').val(data[4]);
-        $('#montant_debit').val(data[5]);
-        $('#montant_credit').val(data[6]);
-        $('#crudModal').modal('show');
-    });
+    e.preventDefault();
+    var row = $(this).closest('tr');
+    var data = row.children('td').map(function() {
+        return $(this).text();
+    }).get();
+    var journalId = $(this).data('journal-id');
+    // Update the form action to include the journal ID
+    $('#journal-form').attr('action', '/journals/' + journalId);
+    // Add the method directive for PUT request
+    $('#journal-form').append('<input type="hidden" name="_method" value="PUT">');
+    // Set the form values based on the selected row's data
+    $('#compte_debit').val(data[0]);
+    $('#compte_credit').val(data[1]);
+    $('#emplois').val(data[2]);
+    $('#date').val(data[3]);
+    $('#ressources').val(data[4]);
+    $('#montant_debit').val(data[5]);
+    $('#montant_credit').val(data[6]);
+    // Show the modal for editing
+    $('#crudModal').modal('show');
+});
+
 
     // Handle add button click
     $('.add-project').click(function() {
